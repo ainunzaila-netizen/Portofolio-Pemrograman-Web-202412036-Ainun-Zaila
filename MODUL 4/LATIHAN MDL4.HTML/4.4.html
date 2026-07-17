@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Perulangan</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        h2{
+            color: darkblue;
+        }
+
+        ul{
+            font-size: 18px;
+        }
+
+        li{
+            margin: 8px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Daftar Nama Teman Sekelas</h2>
+
+    <ul id="daftar-matkul">
+        <!-- Akan diisi oleh JavaScript -->
+    </ul>
+
+<script>
+
+var teman = [
+    "Ainun Zaila",
+    "Kusmi Hita",
+    "Naila Agustina",
+    "Helwina Destiana p",
+    "Sarah Nursiana p"
+];
+
+var daftarElement = document.getElementById("daftar-matkul");
+
+for(let i = 0; i < teman.length; i++){
+    daftarElement.innerHTML += "<li>" + teman[i] + "</li>";
+}
+
+</script>
+
+</body>
+</html>

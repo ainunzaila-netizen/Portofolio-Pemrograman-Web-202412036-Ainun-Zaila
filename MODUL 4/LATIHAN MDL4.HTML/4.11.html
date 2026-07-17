@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Slideshow</title>
+</head>
+<body>
+
+    <h2>Kartun Anak Anak</h2>
+
+    <img id="slideshow-image" src="" alt="Slideshow" width="500">
+
+    <br><br>
+
+    <button onclick="gantiGambar(-1)">Previous</button>
+    <button onclick="gantiGambar(1)">Next</button>
+
+    <script>
+        var gambar = [
+            "https://i.pinimg.com/736x/a0/6f/28/a06f2809eaf435f9b272955bd4fd2de0.jpg",
+            "https://i.pinimg.com/originals/0a/fd/c6/0afdc69f2f9b759f04a8f9371c3ddc0f.jpg",
+            "https://i.pinimg.com/736x/c4/03/09/c4030929c45f63d33f0accc8a1590a10.jpg"
+        ];
+
+        var indexGambar = 0;
+        var imageElement = document.getElementById("slideshow-image");
+
+        function tampilkanGambar() {
+            imageElement.src = gambar[indexGambar];
+        }
+
+        function gantiGambar(arah) {
+            indexGambar += arah;
+
+            // Jika sudah gambar terakhir, kembali ke awal
+            if (indexGambar >= gambar.length) {
+                indexGambar = 0;
+            }
+
+            // Jika sudah gambar pertama dan menekan Previous, pindah ke gambar terakhir
+            if (indexGambar < 0) {
+                indexGambar = gambar.length - 1;
+            }
+
+            tampilkanGambar();
+        }
+
+        // Tampilkan gambar pertama saat halaman dimuat
+        tampilkanGambar();
+    </script>
+
+</body>
+</html>

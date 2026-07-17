@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toko Elektronik Cepat</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg-deep:#ffffff;
+    --panel:#ffffff;
+    --panel-2:#eef5ff;
+    --line:#bcdcff;
+    --led:#1565d8;
+    --led-dim:#5b9ee8;
+    --solder:#d8550f;
+    --ink:#0b2545;
+    --ink-dim:#5d7fa8;
+    --danger:#d6364a;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    background-color:var(--bg-deep);
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(63,184,255,0.07) 1px, transparent 1px);
+    background-size:26px 26px;
+    color:var(--ink);
+    font-family:'Space Grotesk', sans-serif;
+    min-height:100vh;
+  }
+
+  .mono{font-family:'JetBrains Mono', monospace;}
+
+  /* ---------- HEADER ---------- */
+  .topbar{
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(63,184,255,0.04), transparent);
+  }
+  .brand-mark{
+    width:40px;height:40px;border-radius:8px;
+    background:var(--panel-2);
+    border:1px solid var(--led-dim);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--led);
+    font-size:1.1rem;
+    box-shadow:0 0 14px rgba(63,184,255,0.25) inset;
+  }
+  .brand-title{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:1.5rem;
+    letter-spacing:0.01em;
+    margin:0;
+  }
+  .brand-sub{
+    font-size:0.72rem;
+    color:var(--ink-dim);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    margin:0;
+  }
+  .clock-box{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:0.55rem 1rem;
+    text-align:right;
+    min-width:230px;
+  }
+  .clock-time{
+    font-size:1.25rem;
+    color:var(--led);
+    font-weight:700;
+    letter-spacing:0.05em;
+  }
+  .clock-date{
+    font-size:0.72rem;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+  }
+  .pulse-dot{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--led);
+    display:inline-block;
+    margin-right:6px;
+    box-shadow:0 0 6px var(--led);
+    animation:pulse 1.6s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1;}
+    50%{opacity:0.25;}
+  }
+
+  /* ---------- PANELS ---------- */
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:1.25rem;
+    box-shadow:0 4px 18px rgba(21,101,216,0.08);
+  }
+  .panel-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.7rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:var(--led-dim);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:1rem;
+  }
+  .panel-label::before{
+    content:"";
+    width:8px;height:8px;
+    background:var(--led);
+    border-radius:2px;
+    box-shadow:0 0 8px var(--led);
+  }
+
+  /* ---------- SLIDESHOW ---------- */
+  .scope{
+    position:relative;
+    background:#040b15;
+    border:1px solid var(--led-dim);
+    border-radius:10px;
+    aspect-ratio:4/3;
+    overflow:hidden;
+    box-shadow:0 0 0 1px rgba(63,184,255,0.1), 0 0 30px rgba(63,184,255,0.08) inset;
+  }
+  .scope::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(63,184,255,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(63,184,255,0.07) 1px, transparent 1px);
+    background-size:20px 20px;
+    pointer-events:none;
+    z-index:2;
+  }
+  .scope img{
+    width:100%;height:100%;
+    object-fit:cover;
+    display:block;
+    transition:opacity 0.25s ease;
+  }
+  .scope-tag{
+    position:absolute; top:10px; left:10px;
+    z-index:3;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem;
+    background:rgba(4,11,21,0.85);
+    border:1px solid var(--led-dim);
+    color:var(--led);
+    padding:3px 8px;
+    border-radius:5px;
+    letter-spacing:0.05em;
+  }
+  .scope-counter{
+    position:absolute; bottom:10px; right:10px;
+    z-index:3;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.7rem;
+    background:rgba(4,11,21,0.85);
+    border:1px solid var(--line);
+    color:var(--ink-dim);
+    padding:3px 8px;
+    border-radius:5px;
+  }
+  .slide-btn{
+    background:var(--panel-2);
+    border:1px solid var(--led-dim);
+    color:var(--led);
+    border-radius:8px;
+    width:42px;height:42px;
+    display:flex;align-items:center;justify-content:center;
+    transition:all 0.15s ease;
+  }
+  .slide-btn:hover{
+    background:var(--led);
+    color:#040b15;
+    box-shadow:0 0 14px rgba(63,184,255,0.55);
+  }
+  .slide-dots{
+    display:flex;gap:6px;align-items:center;justify-content:center;
+  }
+  .slide-dots .dot{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--line);
+    transition:all 0.2s ease;
+  }
+  .slide-dots .dot.active{
+    background:var(--led);
+    box-shadow:0 0 6px var(--led);
+    width:20px;border-radius:4px;
+  }
+
+  .product-name-active{
+    font-size:1.4rem;
+    font-weight:700;
+    margin-bottom:0.15rem;
+  }
+  .product-price-active{
+    font-family:'JetBrains Mono', monospace;
+    font-size:1.6rem;
+    font-weight:700;
+    color:var(--solder);
+  }
+
+  /* ---------- PRODUCT LIST ---------- */
+  .product-row{
+    display:flex;
+    gap:0.75rem;
+    align-items:center;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:0.6rem;
+    margin-bottom:0.6rem;
+    cursor:pointer;
+    transition:all 0.15s ease;
+  }
+  .product-row:hover{
+    border-color:var(--led-dim);
+    transform:translateX(3px);
+  }
+  .product-row.selected{
+    border-color:var(--led);
+    background:linear-gradient(90deg, rgba(63,184,255,0.08), var(--panel-2));
+    box-shadow:0 0 0 1px rgba(63,184,255,0.15) inset;
+  }
+  .product-row img{
+    width:54px;height:54px;
+    object-fit:cover;
+    border-radius:7px;
+    border:1px solid var(--line);
+    flex-shrink:0;
+  }
+  .product-row .pr-name{
+    font-weight:600;
+    font-size:0.92rem;
+    margin-bottom:2px;
+  }
+  .product-row .pr-price{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.82rem;
+    color:var(--led-dim);
+  }
+  .product-row.selected .pr-price{color:var(--led);}
+  .pr-chip{
+    margin-left:auto;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.65rem;
+    color:var(--ink-dim);
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:2px 6px;
+    white-space:nowrap;
+  }
+
+  /* ---------- FORM ---------- */
+  .form-control, .form-select{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    color:var(--ink);
+  }
+  .form-control:focus, .form-select:focus{
+    background:var(--panel-2);
+    color:var(--ink);
+    border-color:var(--led-dim);
+    box-shadow:0 0 0 0.2rem rgba(63,184,255,0.15);
+  }
+  .form-control::placeholder{color:var(--ink-dim);}
+  .form-label{
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--ink-dim);
+    margin-bottom:0.3rem;
+  }
+  .btn-led{
+    background:var(--led);
+    border:none;
+    color:#ffffff;
+    font-weight:700;
+    letter-spacing:0.04em;
+    padding:0.65rem 1rem;
+    border-radius:9px;
+    transition:all 0.15s ease;
+  }
+  .btn-led:hover{
+    background:#0d4ea3;
+    box-shadow:0 0 18px rgba(21,101,216,0.4);
+    color:#ffffff;
+  }
+  .field-error{
+    color:var(--danger);
+    font-size:0.75rem;
+    margin-top:4px;
+    display:none;
+  }
+  .is-flagged{border-color:var(--danger) !important;}
+
+  /* ---------- RECEIPT ---------- */
+  .receipt-empty{
+    color:var(--ink-dim);
+    font-size:0.9rem;
+    text-align:center;
+    padding:2.5rem 1rem;
+    border:1px dashed var(--line);
+    border-radius:10px;
+  }
+  .receipt{
+    background:#f3f1e7;
+    color:#1a1a1a;
+    border-radius:6px;
+    padding:1.25rem 1.1rem;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.85rem;
+    position:relative;
+    box-shadow:0 8px 24px rgba(0,0,0,0.35);
+    animation:printIn 0.35s ease;
+  }
+  @keyframes printIn{
+    from{opacity:0; transform:translateY(-8px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .receipt::before, .receipt::after{
+    content:"";
+    position:absolute; left:0; right:0; height:10px;
+    background:
+      linear-gradient(135deg, #f3f1e7 50%, transparent 50%) 0 0/10px 10px repeat-x;
+  }
+  .receipt::before{top:-9px;}
+  .receipt::after{bottom:-9px; transform:scaleY(-1);}
+  .receipt .r-title{
+    text-align:center;
+    font-weight:700;
+    letter-spacing:0.1em;
+    margin-bottom:0.2rem;
+  }
+  .receipt .r-sub{
+    text-align:center;
+    font-size:0.7rem;
+    color:#555;
+    margin-bottom:0.7rem;
+  }
+  .receipt hr{
+    border-top:1px dashed #999;
+    margin:0.6rem 0;
+  }
+  .r-line{
+    display:flex;
+    justify-content:space-between;
+    gap:0.5rem;
+    margin-bottom:0.25rem;
+  }
+  .r-line span:first-child{color:#555;}
+  .r-total{
+    font-weight:700;
+    font-size:1rem;
+    border-top:1px solid #1a1a1a;
+    padding-top:0.4rem;
+    margin-top:0.3rem;
+  }
+  .r-discount{color:#b34700;}
+
+  footer.app-footer{
+    color:var(--ink-dim);
+    font-size:0.75rem;
+    text-align:center;
+    padding:1.5rem 0 1rem;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .pulse-dot{animation:none;}
+    .receipt{animation:none;}
+  }
+
+  @media (max-width: 767px){
+    .clock-box{min-width:0; text-align:left; margin-top:0.5rem;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="topbar py-3 mb-4">
+  <div class="container">
+    <div class="d-flex flex-wrap justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-3">
+        <div class="brand-mark"><i class="fa-solid fa-bolt"></i></div>
+        <div>
+          <p class="brand-title">Toko Elektronik Cepat</p>
+          <p class="brand-sub">Diagnostik &middot; Belanja &middot; Kasir Digital</p>
+        </div>
+      </div>
+      <div class="clock-box">
+        <div class="clock-time mono"><span class="pulse-dot"></span><span id="jamSekarang">--:--:--</span></div>
+        <div class="clock-date" id="tanggalSekarang">-- ----- ----</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container pb-5">
+  <div class="row g-4">
+
+    <!-- DISPLAY UTAMA -->
+    <div class="col-lg-7">
+      <div class="panel h-100">
+        <div class="panel-label">Layar Diagnostik Produk</div>
+
+        <div class="scope mb-3" id="scopeBox">
+          <span class="scope-tag mono" id="scopeTag">UNIT-01</span>
+          <img id="slideImg" src="" alt="Gambar produk">
+          <span class="scope-counter mono" id="scopeCounter">1/1</span>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between mb-4">
+          <button class="slide-btn" id="btnPrev" type="button" aria-label="Gambar sebelumnya">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <div class="slide-dots" id="slideDots"></div>
+          <button class="slide-btn" id="btnNext" type="button" aria-label="Gambar berikutnya">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+
+        <div>
+          <p class="product-name-active mb-1" id="activeName">-</p>
+          <p class="product-price-active mb-0" id="activePrice">Rp 0</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAFTAR PRODUK -->
+    <div class="col-lg-5">
+      <div class="panel h-100">
+        <div class="panel-label">Daftar Komponen Tersedia</div>
+        <div id="productList"><!-- diisi oleh JS --></div>
+      </div>
+    </div>
+
+    <!-- FORM PEMESANAN -->
+    <div class="col-lg-7">
+      <div class="panel h-100">
+        <div class="panel-label">Form Pemesanan</div>
+
+        <div class="mb-3">
+          <label class="form-label" for="inputNama">Nama Pemesan</label>
+          <input type="text" class="form-control" id="inputNama" placeholder="Contoh: Budi Santoso">
+          <div class="field-error" id="errNama">Nama pemesan wajib diisi.</div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <label class="form-label" for="inputJumlah">Jumlah Pesan</label>
+            <input type="number" class="form-control" id="inputJumlah" placeholder="0" min="1">
+            <div class="field-error" id="errJumlah">Jumlah harus lebih dari 0.</div>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label" for="inputPromo">Kode Promo <span class="text-muted">(opsional)</span></label>
+            <input type="text" class="form-control mono" id="inputPromo" placeholder="DISKON10">
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <button class="btn btn-led w-100" id="btnPesan" type="button">
+            <i class="fa-solid fa-bolt-lightning me-2"></i>Pesan Sekarang
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OUTPUT / STRUK -->
+    <div class="col-lg-5">
+      <div class="panel h-100">
+        <div class="panel-label">Struk &amp; Ringkasan Pesanan</div>
+        <div id="receiptArea">
+          <div class="receipt-empty">
+            <i class="fa-solid fa-receipt mb-2 d-block" style="font-size:1.6rem;"></i>
+            Belum ada pesanan.<br>Isi form di samping lalu klik <strong>Pesan Sekarang</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="app-footer">
+  Toko Elektronik Cepat &mdash; Tugas Akhir Praktikum Pemrograman Web
+</footer>
+
+<script>
+/* =======================================================
+   1. DATA PRODUK (Array of Objects)
+   ======================================================= */
+const daftarProduk = [
+  {
+    nama: "Headphone Wireless AeroBeat X1",
+    harga: 459000,
+    gambar: [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=900&q=80",
+      "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=900&q=80",
+      "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=900&q=80"
+    ]
+  },
+  {
+    nama: "Smartwatch PulseTrack S2",
+    harga: 729000,
+    gambar: [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=900&q=80",
+      "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=900&q=80",
+      "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=900&q=80"
+    ]
+  },
+  {
+    nama: "Speaker Bluetooth BoomCube Mini",
+    harga: 289000,
+    gambar: [
+      "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=900&q=80",
+      "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=900&q=80",
+      "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=900&q=80"
+    ]
+  },
+  {
+    nama: "Power Bank VoltCell 20000mAh",
+    harga: 215000,
+    gambar: [
+      "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=900&q=80",
+      "https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=900&q=80",
+      "https://images.unsplash.com/photo-1591290619762-c8e5e1a52a76?w=900&q=80"
+    ]
+  }
+];
+
+/* state global */
+let idxProdukAktif = 0;   // index produk yang sedang ditampilkan di display utama
+let idxGambarAktif = 0;   // index gambar slideshow yang sedang tampil
+
+/* =======================================================
+   2. JAM & TANGGAL DINAMIS (Date object + setInterval)
+   ======================================================= */
+const namaHari  = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+
+function perbaruiWaktu(){
+  const sekarang = new Date();
+
+  const jam   = String(sekarang.getHours()).padStart(2,"0");
+  const menit = String(sekarang.getMinutes()).padStart(2,"0");
+  const detik = String(sekarang.getSeconds()).padStart(2,"0");
+  document.getElementById("jamSekarang").textContent = `${jam}:${menit}:${detik}`;
+
+  const teksTanggal = `${namaHari[sekarang.getDay()]}, ${sekarang.getDate()} ${namaBulan[sekarang.getMonth()]} ${sekarang.getFullYear()}`;
+  document.getElementById("tanggalSekarang").textContent = teksTanggal;
+}
+perbaruiWaktu();
+setInterval(perbaruiWaktu, 1000);
+
+/* =======================================================
+   3. FORMAT RUPIAH
+   ======================================================= */
+function formatRupiah(angka){
+  return "Rp " + angka.toLocaleString("id-ID");
+}
+
+/* =======================================================
+   4. RENDER DAFTAR PRODUK (perulangan / for loop)
+   ======================================================= */
+function renderDaftarProduk(){
+  const container = document.getElementById("productList");
+  container.innerHTML = ""; // reset dulu
+
+  for (let i = 0; i < daftarProduk.length; i++){
+    const produk = daftarProduk[i];
+
+    const row = document.createElement("div");
+    row.className = "product-row" + (i === idxProdukAktif ? " selected" : "");
+    row.setAttribute("data-index", i);
+
+    row.innerHTML = `
+      <img src="${produk.gambar[0]}" alt="${produk.nama}">
+      <div>
+        <div class="pr-name">${produk.nama}</div>
+        <div class="pr-price">${formatRupiah(produk.harga)}</div>
+      </div>
+      <span class="pr-chip mono">${produk.gambar.length} FOTO</span>
+    `;
+
+    row.addEventListener("click", function(){
+      pilihProduk(i);
+    });
+
+    container.appendChild(row);
+  }
+}
+
+/* =======================================================
+   5. PILIH PRODUK -> ganti display utama
+   ======================================================= */
+function pilihProduk(index){
+  idxProdukAktif = index;
+  idxGambarAktif = 0; // reset ke gambar pertama setiap ganti produk
+  renderDisplayUtama();
+  renderDaftarProduk(); // refresh highlight item terpilih
+}
+
+/* =======================================================
+   6. SLIDESHOW (Praktikum 11)
+   ======================================================= */
+function renderDisplayUtama(){
+  const produk = daftarProduk[idxProdukAktif];
+
+  // gambar slideshow
+  document.getElementById("slideImg").src = produk.gambar[idxGambarAktif];
+  document.getElementById("slideImg").alt = produk.nama;
+
+  // tag & counter
+  document.getElementById("scopeTag").textContent = "UNIT-" + String(idxProdukAktif + 1).padStart(2,"0");
+  document.getElementById("scopeCounter").textContent = `${idxGambarAktif + 1}/${produk.gambar.length}`;
+
+  // nama & harga
+  document.getElementById("activeName").textContent = produk.nama;
+  document.getElementById("activePrice").textContent = formatRupiah(produk.harga);
+
+  // dots indikator
+  const dotsContainer = document.getElementById("slideDots");
+  dotsContainer.innerHTML = "";
+  for (let i = 0; i < produk.gambar.length; i++){
+    const dot = document.createElement("span");
+    dot.className = "dot" + (i === idxGambarAktif ? " active" : "");
+    dotsContainer.appendChild(dot);
+  }
+}
+
+document.getElementById("btnNext").addEventListener("click", function(){
+  const produk = daftarProduk[idxProdukAktif];
+  idxGambarAktif = (idxGambarAktif + 1) % produk.gambar.length; // looping ke awal
+  renderDisplayUtama();
+});
+
+document.getElementById("btnPrev").addEventListener("click", function(){
+  const produk = daftarProduk[idxProdukAktif];
+  idxGambarAktif = (idxGambarAktif - 1 + produk.gambar.length) % produk.gambar.length; // looping ke akhir
+  renderDisplayUtama();
+});
+
+/* =======================================================
+   7. VALIDASI FORM (Praktikum 5)
+   ======================================================= */
+function validasiForm(nama, jumlah){
+  let valid = true;
+
+  const inputNama   = document.getElementById("inputNama");
+  const inputJumlah = document.getElementById("inputJumlah");
+  const errNama     = document.getElementById("errNama");
+  const errJumlah   = document.getElementById("errJumlah");
+
+  // reset state error dulu
+  inputNama.classList.remove("is-flagged");
+  inputJumlah.classList.remove("is-flagged");
+  errNama.style.display = "none";
+  errJumlah.style.display = "none";
+
+  if (nama.trim() === ""){
+    inputNama.classList.add("is-flagged");
+    errNama.style.display = "block";
+    valid = false;
+  }
+
+  if (isNaN(jumlah) || jumlah <= 0){
+    inputJumlah.classList.add("is-flagged");
+    errJumlah.style.display = "block";
+    valid = false;
+  }
+
+  return valid;
+}
+
+/* =======================================================
+   8. GENERATE ORDER ID (Praktikum 9 - Math.random)
+   ======================================================= */
+function buatOrderId(){
+  const angkaAcak = Math.floor(Math.random() * 90000) + 10000; // jamin 5 digit (10000-99999)
+  return "INV-" + angkaAcak;
+}
+
+/* =======================================================
+   9. LOGIKA PEMESANAN (klik tombol Pesan Sekarang)
+   ======================================================= */
+document.getElementById("btnPesan").addEventListener("click", function(){
+  const nama       = document.getElementById("inputNama").value;
+  const jumlahStr  = document.getElementById("inputJumlah").value;
+  const jumlah     = parseInt(jumlahStr);
+  const promoInput = document.getElementById("inputPromo").value;
+
+  // --- validasi ---
+  if (!validasiForm(nama, jumlah)){
+    return; // hentikan proses jika tidak valid
+  }
+
+  // --- ambil produk aktif ---
+  const produk = daftarProduk[idxProdukAktif];
+
+  // --- hitung subtotal ---
+  const subtotal = produk.harga * jumlah;
+
+  // --- percabangan kode promo (Praktikum 3) ---
+  const promoUpper = promoInput.toUpperCase().trim(); // metode objek String
+  let persenDiskon = 0;
+  let potongan = 0;
+
+  if (promoUpper === "DISKON10"){
+    persenDiskon = 10;
+    potongan = subtotal * (persenDiskon / 100);
+  } else if (promoUpper !== ""){
+    // kode promo diisi tapi tidak valid -> tidak ada potongan
+    persenDiskon = 0;
+    potongan = 0;
+  }
+
+  const totalAkhir = subtotal - potongan;
+
+  // --- generate order id ---
+  const orderId = buatOrderId();
+
+  // --- waktu transaksi untuk struk ---
+  const waktuTransaksi = new Date();
+  const jamStruk = String(waktuTransaksi.getHours()).padStart(2,"0") + ":" +
+                   String(waktuTransaksi.getMinutes()).padStart(2,"0");
+  const tanggalStruk = `${waktuTransaksi.getDate()} ${namaBulan[waktuTransaksi.getMonth()]} ${waktuTransaksi.getFullYear()}`;
+
+  // --- render struk ---
+  tampilkanStruk({
+    orderId,
+    nama,
+    namaProduk: produk.nama,
+    jumlah,
+    subtotal,
+    persenDiskon,
+    potongan,
+    totalAkhir,
+    promoUpper,
+    tanggalStruk,
+    jamStruk
+  });
+});
+
+function tampilkanStruk(data){
+  const area = document.getElementById("receiptArea");
+
+  let baseHargaPerUnit = data.subtotal / data.jumlah;
+
+  area.innerHTML = `
+    <div class="receipt">
+      <div class="r-title">TOKO ELEKTRONIK CEPAT</div>
+      <div class="r-sub">${data.tanggalStruk} &bull; ${data.jamStruk}</div>
+      <hr>
+      <div class="r-line"><span>Order ID</span><span>${data.orderId}</span></div>
+      <div class="r-line"><span>Pemesan</span><span>${data.nama}</span></div>
+      <hr>
+      <div class="r-line"><span>Produk</span><span style="text-align:right;max-width:60%;">${data.namaProduk}</span></div>
+      <div class="r-line"><span>Harga satuan</span><span>${formatRupiah(baseHargaPerUnit)}</span></div>
+      <div class="r-line"><span>Jumlah</span><span>${data.jumlah} pcs</span></div>
+      <hr>
+      <div class="r-line"><span>Subtotal</span><span>${formatRupiah(data.subtotal)}</span></div>
+      <div class="r-line r-discount"><span>Promo ${data.promoUpper !== "" ? "("+data.promoUpper+")" : ""}</span><span>${data.persenDiskon > 0 ? "-" + formatRupiah(data.potongan) : formatRupiah(0)}</span></div>
+      <div class="r-line r-total"><span>TOTAL AKHIR</span><span>${formatRupiah(data.totalAkhir)}</span></div>
+      <hr>
+      <div class="r-sub mb-0">Terima kasih telah berbelanja!</div>
+    </div>
+  `;
+}
+
+/* =======================================================
+   10. INISIALISASI HALAMAN
+   ======================================================= */
+renderDaftarProduk();
+renderDisplayUtama();
+</script>
+
+</body>
+</html>

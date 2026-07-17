@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Praktikum CSS</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #add8e6;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      color: #ffffff;
+      font-size: 40px;
+      text-align: center;
+      margin-bottom: 24px;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    p {
+      background-color: #d3d3d3;
+      color: #000000;
+      padding: 20px 24px;
+      border-radius: 10px;
+      max-width: 800px;
+      margin: 0 auto 32px auto;
+      line-height: 1.7;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .box1, .box2, .box3 {
+      border: 2px solid #000000;
+      padding: 10px;
+      height: 150px;
+      border-radius: 10px;
+    }
+
+    .box1 { background-color: #ff9999; }
+    .box2 { background-color: #99ff99; }
+    .box3 { background-color: #9999ff; }
+
+    /* Tablet: max 768px → 2 kolom */
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Smartphone: max 480px → 1 kolom */
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 28px;
+      }
+
+      p {
+        padding: 12px 16px;
+      }
+
+      .container {
+        grid-template-columns: 1fr;
+      }
+
+      .box1, .box2, .box3 {
+        height: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Praktikum CSS</h1>
+
+  <p>
+    Selamat datang di halaman Praktikum CSS! Pada praktikum ini kita akan mempelajari dasar-dasar
+    penggunaan CSS untuk mengatur tampilan halaman web, mulai dari warna, ukuran font, layout kotak
+    menggunakan CSS Grid, hingga desain responsif yang menyesuaikan tampilan pada berbagai ukuran layar.
+  </p>
+
+  <div class="container">
+    <div class="box1">
+      <strong>Box 1</strong>
+      <p style="background:none; padding:0; margin:0; border-radius:0; max-width:none;">Teknik Informatika.</p>
+    </div>
+    <div class="box2">
+      <strong>Box 2</strong>
+      <p style="background:none; padding:0; margin:0; border-radius:0; max-width:none;">Teknik Elektro.</p>
+    </div>
+    <div class="box3">
+      <strong>Box 3</strong>
+      <p style="background:none; padding:0; margin:0; border-radius:0; max-width:none;">Teknik Informasi.</p>
+    </div>
+  </div>
+
+</body>
+</html>

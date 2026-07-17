@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Logika Percabangan</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        input{
+            padding: 8px;
+            width: 220px;
+            font-size: 16px;
+        }
+
+        button{
+            padding: 8px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        #hasil{
+            margin-top: 20px;
+            color: darkblue;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Kalkulator Diskon Belanja</h2>
+
+    <p>Masukkan total belanja Anda:</p>
+
+    <input type="number" id="totalBelanja" placeholder="Contoh: 150000">
+
+    <button onclick="cekDiskon()">Cek Diskon</button>
+
+    <h3 id="hasil"></h3>
+
+<script>
+
+function cekDiskon(){
+
+    var total = parseFloat(document.getElementById("totalBelanja").value);
+
+    var pesan = "";
+    var diskon = 0;
+    var totalBayar = total;
+
+    if(isNaN(total)){
+
+        pesan = "Mohon masukkan angka yang valid.";
+
+    }else if(total > 250000){
+
+        diskon = total * 0.15;
+        totalBayar = total - diskon;
+
+        pesan = "🎉 Selamat! Anda mendapat diskon <b>15%</b><br>" +
+                "Diskon: Rp " + diskon.toLocaleString('id-ID') +
+                "<br>Total Bayar: <b>Rp " +
+                totalBayar.toLocaleString('id-ID') + "</b>";
+
+    }else if(total >= 100000){
+
+        diskon = total * 0.10;
+        totalBayar = total - diskon;
+
+        pesan = "🎉 Selamat! Anda mendapat diskon <b>10%</b><br>" +
+                "Diskon: Rp " + diskon.toLocaleString('id-ID') +
+                "<br>Total Bayar: <b>Rp " +
+                totalBayar.toLocaleString('id-ID') + "</b>";
+
+    }else{
+
+        pesan = "Maaf, Anda tidak mendapatkan diskon.<br>" +
+                "Total Bayar: <b>Rp " +
+                total.toLocaleString('id-ID') + "</b>";
+
+    }
+
+    document.getElementById("hasil").innerHTML = pesan;
+
+}
+
+</script>
+
+</body>
+</html>
