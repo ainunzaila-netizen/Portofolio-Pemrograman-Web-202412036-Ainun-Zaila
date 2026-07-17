@@ -6,14 +6,17 @@ Ainun Zaila
 ## NIM
 202412036
 
-## Struktur Folder
+## Mata Kuliah
+Pemrograman Web
 
-- Modul1
-- Modul2
-- Modul3
-- Modul4
-- Modul5
-- Modul6
-- Modul7
+## Daftar Modul
+
+- MODUL 1
+- MODUL 2
+- MODUL 3
+- MODUL 4
+- MODUL 5
+- MODUL 6
+- MODUL 7
 
 Repository ini berisi seluruh hasil praktikum mata kuliah Pemrograman Web.
